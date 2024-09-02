@@ -2,10 +2,6 @@ import dotenv from "dotenv";
 import { app } from "./app.js";
 import connectToDatabase from "../db/index.js";
 
-dotenv.config({
-  path: "./.env",
-});
-
 connectToDatabase()
   .then(() => {
     app.listen(process.env.PORT || 4000, () => {

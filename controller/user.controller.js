@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { User } from "../models/user.model.js";
 import { asyncHandler } from "../utils/AsyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
 
 const registerUser = asyncHandler(async (req, res) => {
   const { fullName, password, email, address, phoneNumber, userImage } =
@@ -28,6 +29,14 @@ const registerUser = asyncHandler(async (req, res) => {
     if (!validateEmail(email)) {
       throw new ApiError(400, "Email is not valid");
     }
+
+    const searchedUser = await User.findOne({
+      email,
+    });
+
+    if (searchedUser) {
+      throw new ApiError(400, "Email is already used!!!");
+    }
   }
 
   if (password) {
@@ -37,6 +46,9 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 
   try {
+    const { fullName, password, email, address, phoneNumber, userImage } =
+      req.body;
+
     const user = await User.create({
       fullName,
       password,
@@ -49,7 +61,9 @@ const registerUser = asyncHandler(async (req, res) => {
     const registeredUser = await User.findById(user._id);
 
     if (!registeredUser) {
-      throw new ApiError(500, "Something went wrong when registering the user");
+      return next(
+        new ApiError(500, "Something went wrong when registering the user")
+      );
     }
 
     return res
@@ -58,7 +72,7 @@ const registerUser = asyncHandler(async (req, res) => {
         new ApiResponse(201, registeredUser, "User registered successfully")
       );
   } catch (error) {
-    throw new ApiError(500, "Internal Server Error");
+    return new ApiError(500, error.message || "Internal Server Error");
   }
 });
 

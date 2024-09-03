@@ -21,6 +21,7 @@ const userSchema = new Schema(
       index: true,
       lowercase: true,
       index: true,
+      unique: true,
     },
 
     address: {

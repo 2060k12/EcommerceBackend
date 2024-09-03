@@ -23,10 +23,12 @@ app.use(express.static("public"));
 
 // Importing routes
 
-import userRouter from "../routes/home.routes.js";
+import homeRouter from "../routes/home.routes.js";
 import cakeRouter from "../routes/cake.routes.js";
+import userRouter from "../routes/user.routes.js";
 
-app.use("/api/v1/", userRouter);
+app.use("/api/v1/", homeRouter);
 app.use("/api/v1/cake", cakeRouter);
+app.use("/api/v1/user", userRouter);
 
 export { app };

@@ -17,7 +17,7 @@ const cakeSchema = new Schema(
       type: Number,
       required: true,
     },
-    desctiption: {
+    description: {
       type: String,
       required: false,
     },

@@ -19,6 +19,10 @@ const uploadCake = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Cake's Display Name and Image are mandatory");
   }
 
+  if (!description) {
+    throw new ApiError(400, "Description is empty");
+  }
+
   const cake = await Cake.create({
     displayName,
     imageUrl,
